@@ -18,7 +18,7 @@ bool status_flags[] = {false, false, false};
 uint8_t relay_pins[] = {BATTERY_1_RELAY, BATTERY_2_RELAY, BATTERY_3_RELAY};
 String field_names[] = {"shade_net", "ph_downer", "misting_process"};
 
-const bool testing = true;
+const bool testing = false;
 
 void printPercentages();
 
@@ -43,6 +43,10 @@ void setup() {
   pinMode(BATTERY_2_RELAY, OUTPUT);
   pinMode(BATTERY_3_RELAY, OUTPUT);
   pinMode(PIN_SOURCE, INPUT);
+
+  digitalWrite(BATTERY_1_RELAY, HIGH);
+  digitalWrite(BATTERY_2_RELAY, HIGH);
+  digitalWrite(BATTERY_3_RELAY, HIGH);
 
   if (!ina3221.begin(0x41) && !testing) {
     Serial.println("Failed to initialize INA3221. Check connections.");
@@ -95,7 +99,7 @@ void handleBatteryAndPowerSource(float percentage, uint8_t relayPin, float &bat_
       Serial.print(": ");
       Serial.println("OFF");
     }    
-    digitalWrite(relayPin, HIGH);
+    digitalWrite(relayPin, LOW);
     bat_status = true;
   }
   else if (percentage < 80.0 && has_source && percentage > 20) {
@@ -106,7 +110,7 @@ void handleBatteryAndPowerSource(float percentage, uint8_t relayPin, float &bat_
       Serial.println("ON");
       bat_voltage += .01;
     }
-    digitalWrite(relayPin, LOW);
+    digitalWrite(relayPin, HIGH);
     bat_status = false;
   }
   else if (percentage <= 20 && has_source) {
@@ -117,7 +121,7 @@ void handleBatteryAndPowerSource(float percentage, uint8_t relayPin, float &bat_
       Serial.println("OFF");
       bat_voltage += .01;
     }
-    digitalWrite(relayPin, HIGH);
+    digitalWrite(relayPin, LOW);
     bat_status = true;
   }
   else if (percentage <= 20) {
@@ -127,7 +131,7 @@ void handleBatteryAndPowerSource(float percentage, uint8_t relayPin, float &bat_
       Serial.print(": ");
       Serial.println("OFF");
     }
-    digitalWrite(relayPin, HIGH);
+    digitalWrite(relayPin, LOW);
     bat_status = true;
   }
   else if (!has_source) {
@@ -138,7 +142,7 @@ void handleBatteryAndPowerSource(float percentage, uint8_t relayPin, float &bat_
       Serial.println("ON");
       bat_voltage -= .01;
     }
-    digitalWrite(relayPin, LOW);
+    digitalWrite(relayPin, HIGH);
     bat_status = false;
   }
 }
