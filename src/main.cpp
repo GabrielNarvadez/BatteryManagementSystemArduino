@@ -78,7 +78,7 @@ void loop() {
     sendPayloads();
   }
 
-  delay(2000);
+  delay(10000);
 }
 
 JsonDocument createBatteryPayload(int id, float percent) {
