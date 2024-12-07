@@ -208,7 +208,7 @@ void sendPayloads() {
 
   JsonDocument doc_system_status;
   doc_system_status["component"] = "system_status";
-  doc_system_status["status"] = "ON";
+  doc_system_status["status"] = digitalRead(PIN_SOURCE) == HIGH ? "ON" : "OFF";
   doc_system_status["timestamp"] = "2024-11-30T10:30:00Z";
   serializeJson(doc_system_status, Serial);
   Serial.println();
