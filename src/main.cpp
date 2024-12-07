@@ -63,6 +63,10 @@ void loop() {
     }
   }
 
+  digitalWrite(BATTERY_1_RELAY, HIGH);
+  digitalWrite(BATTERY_2_RELAY, HIGH);
+  digitalWrite(BATTERY_3_RELAY, HIGH);
+  delay(1000);
   for (int i = 0; i < 3; i++) {
     percentages[i] = getPercentage(voltages[i]);
     handleBatteryAndPowerSource(percentages[i], relay_pins[i], voltages[i], status_flags[i]);
